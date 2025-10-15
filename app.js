@@ -8,6 +8,7 @@ let pdfCache = new Map();
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
 // DOM elements
+const folderLinkInput = document.getElementById('folderLinkInput');
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
 const loadBtn = document.getElementById('loadBtn');
@@ -30,8 +31,12 @@ closeViewer.addEventListener('click', closePdfViewer);
 
 // Initialize
 window.addEventListener('load', () => {
-    if (!CONFIG.API_KEY || CONFIG.API_KEY === 'YOUR_GOOGLE_DRIVE_API_KEY') {
-        showStatus('Please configure your Google Drive API key in config.js', 'error');
+    // Load saved folder link from localStorage
+    const savedLink = localStorage.getItem('folderLink');
+    if (savedLink) {
+        folderLinkInput.value = savedLink;
+    } else if (CONFIG.FOLDER_LINK) {
+        folderLinkInput.value = CONFIG.FOLDER_LINK;
     }
 });
 
@@ -47,30 +52,63 @@ function hideStatus() {
     status.style.display = 'none';
 }
 
+// Extract folder ID from Google Drive link
+function extractFolderId(link) {
+    if (!link) return null;
+    
+    // Handle different Google Drive URL formats
+    // https://drive.google.com/drive/folders/FOLDER_ID
+    // https://drive.google.com/drive/folders/FOLDER_ID?usp=sharing
+    const folderMatch = link.match(/\/folders\/([a-zA-Z0-9_-]+)/);
+    if (folderMatch && folderMatch[1]) {
+        return folderMatch[1];
+    }
+    
+    // If it's just the ID
+    if (/^[a-zA-Z0-9_-]+$/.test(link.trim())) {
+        return link.trim();
+    }
+    
+    return null;
+}
+
 // Load PDFs from Google Drive
 async function loadPDFsFromDrive() {
+    // Check for API key
     if (!CONFIG.API_KEY || CONFIG.API_KEY === 'YOUR_GOOGLE_DRIVE_API_KEY') {
         showStatus('Please configure your Google Drive API key in config.js', 'error');
         return;
     }
 
-    if (!CONFIG.FOLDER_ID || CONFIG.FOLDER_ID === 'YOUR_FOLDER_ID') {
-        showStatus('Please configure your Google Drive folder ID in config.js', 'error');
+    const folderLink = folderLinkInput.value.trim();
+    
+    if (!folderLink) {
+        showStatus('Please paste a Google Drive folder link in the input field above', 'error');
         return;
     }
+
+    const folderId = extractFolderId(folderLink);
+    
+    if (!folderId) {
+        showStatus('Invalid Google Drive folder link. Please paste a valid folder link.', 'error');
+        return;
+    }
+
+    // Save folder link to localStorage
+    localStorage.setItem('folderLink', folderLink);
 
     loadBtn.disabled = true;
     showStatus('Loading PDFs from Google Drive...', 'loading');
 
     try {
         // Query Google Drive API for PDF files in the folder
-        const query = `'${CONFIG.FOLDER_ID}' in parents and mimeType='application/pdf' and trashed=false`;
+        const query = `'${folderId}' in parents and mimeType='application/pdf' and trashed=false`;
         const url = `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(query)}&key=${CONFIG.API_KEY}&fields=files(id,name,webViewLink,webContentLink)`;
 
         const response = await fetch(url);
         
         if (!response.ok) {
-            throw new Error(`Failed to load PDFs: ${response.status} ${response.statusText}`);
+            throw new Error(`Failed to load PDFs: ${response.status} ${response.statusText}. Make sure the folder is shared publicly.`);
         }
 
         const data = await response.json();
