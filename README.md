@@ -11,7 +11,7 @@ A website to easily find your own time planning
 
 ## Setup Instructions
 
-### 1. Enable Google Drive API
+### 1. One-time API Setup
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Create a new project or select an existing one
@@ -22,62 +22,68 @@ A website to easily find your own time planning
 4. Create credentials:
    - Go to "APIs & Services" > "Credentials"
    - Click "Create Credentials" > "API Key"
-   - Copy the API key (you'll need this later)
-   - (Recommended) Restrict the API key to only Google Drive API and your domain
+   - Copy the API key
+5. Open `config.js` and replace `YOUR_GOOGLE_DRIVE_API_KEY` with your API key
 
-### 2. Prepare Your Google Drive Folder
+### 2. Using the Application
 
-1. Create a folder in Google Drive containing all your PDF time plannings
+1. Create a folder in Google Drive with your PDF files
 2. Right-click the folder and select "Get link"
 3. Set permissions to "Anyone with the link can view"
-4. Copy the folder ID from the URL (the part after `/folders/`)
-   - Example: `https://drive.google.com/drive/folders/1AbCdEfGhIjKlMnOpQrStUvWxYz`
-   - Folder ID: `1AbCdEfGhIjKlMnOpQrStUvWxYz`
+4. Copy the folder link
+5. Open the application website
+6. Paste your folder link in the input field at the top
+7. Click "Load PDFs"
+8. Search for names in your documents
 
-### 3. Configure the Application
+**Note:** You only need to set up the API key once. After that, you can use any folder by simply pasting its link in the application!
 
-1. Open `config.js` in a text editor
-2. Replace `YOUR_GOOGLE_DRIVE_API_KEY` with your actual API key
-3. Replace `YOUR_FOLDER_ID` with your Google Drive folder ID
-4. Save the file
+### 3. Deploy to GitHub Pages (Optional)
 
-Example `config.js`:
-```javascript
-const CONFIG = {
-    API_KEY: 'AIzaSyD1234567890abcdefghijklmnop',
-    FOLDER_ID: '1AbCdEfGhIjKlMnOpQrStUvWxYz',
-};
-```
-
-### 4. Deploy to GitHub Pages
-
-1. Commit all files to your repository
-2. Go to your repository settings on GitHub
-3. Navigate to "Pages" section
-4. Under "Source", select the branch you want to deploy (e.g., `main`)
-5. Click "Save"
-6. Your site will be available at `https://[username].github.io/[repository-name]/`
+1. Fork or clone this repository
+2. Edit `config.js` with your API key
+3. Commit the changes
+4. Go to your repository settings on GitHub
+5. Navigate to "Pages" section
+6. Under "Source", select the branch you want to deploy (e.g., `main`)
+7. Click "Save"
+8. Your site will be available at `https://[username].github.io/[repository-name]/`
 
 ## Usage
 
 1. Open the website
-2. Click "Load PDFs" to fetch all PDFs from your Google Drive folder
-3. Enter a name in the search box
-4. Click "Search" or press Enter
-5. Click on any result to view the PDF
-6. Use the "Download PDF" button to download the file
+2. Paste your Google Drive folder link in the folder input field at the top
+3. Click "Load PDFs" to fetch all PDFs from your Google Drive folder
+4. Enter a name in the search box
+5. Click "Search" or press Enter
+6. Click on any result to view the PDF
+7. Use the "Download PDF" button to download the file
+
+**Tip:** The application remembers your last folder link, so you only need to paste it once!
 
 ## How It Works
 
-1. **Loading PDFs**: The application queries the Google Drive API to get a list of all PDF files in the specified folder
-2. **Content Extraction**: Using PDF.js, the application reads the first few pages of each PDF to extract text content
-3. **Search**: When you search for a name, it looks through the extracted text, titles, and filenames
-4. **Display**: Matching PDFs are displayed with their titles, and you can click to view them
+1. **One-time Setup**: Configure your Google Drive API key once in `config.js`
+2. **Folder Link**: Paste any Google Drive folder link directly in the application
+3. **Loading PDFs**: The application uses the Google Drive API to fetch PDF files from the specified folder
+4. **Content Extraction**: Using PDF.js, the application reads the first few pages of each PDF to extract text content
+5. **Search**: When you search for a name, it looks through the extracted text, titles, and filenames
+6. **Display**: Matching PDFs are displayed with their titles, and you can click to view them
+7. **Persistence**: Your folder link is saved in browser storage for convenience
 
 ## Troubleshooting
 
 ### "Please configure your Google Drive API key"
-- Make sure you've edited `config.js` with your actual API key and folder ID
+- Make sure you've edited `config.js` with your actual API key
+- Follow the setup instructions to get an API key from Google Cloud Console
+
+### "Please paste a Google Drive folder link"
+- Paste a complete Google Drive folder link in the input field at the top
+- The link should look like: `https://drive.google.com/drive/folders/...`
+
+### "Invalid Google Drive folder link"
+- Verify that you've copied the complete folder link from Google Drive
+- Make sure it's a folder link, not a file link
 
 ### "Failed to load PDFs"
 - Check that your Google Drive folder is shared with "Anyone with the link can view"
@@ -95,10 +101,11 @@ const CONFIG = {
 
 ## Security Notes
 
-- Your API key is visible in the client-side code. For production use, consider:
-  - Restricting the API key to your domain in Google Cloud Console
-  - Using API key restrictions to limit usage
-  - Implementing a backend server to hide the API key
+- Your API key needs to be configured once in `config.js`
+- For production use, restrict the API key to your domain in Google Cloud Console
+- Folder links can be changed anytime in the UI without modifying code
+- Your folder link is stored in your browser's localStorage for convenience
+- Make sure only non-sensitive PDFs are in publicly shared folders
 - Do not commit sensitive data to your repository
 
 ## Browser Compatibility
