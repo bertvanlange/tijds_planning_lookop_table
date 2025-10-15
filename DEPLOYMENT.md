@@ -13,11 +13,10 @@ Use this checklist to ensure successful deployment to GitHub Pages.
 - [ ] Google Drive setup complete
   - [ ] Folder created with PDFs
   - [ ] Folder shared publicly ("Anyone with the link can view")
-  - [ ] Folder ID copied from URL
+  - [ ] Folder link copied
 
 - [ ] Configuration complete
   - [ ] `config.js` edited with real API key
-  - [ ] `config.js` edited with real folder ID
   - [ ] Configuration tested locally (optional)
 
 ## Deployment
@@ -45,6 +44,8 @@ Use this checklist to ensure successful deployment to GitHub Pages.
 - [ ] Visit GitHub Pages URL: `https://[username].github.io/[repo-name]/`
 - [ ] Test functionality:
   - [ ] Page loads correctly
+  - [ ] Folder link input field is visible at the top
+  - [ ] Paste a Google Drive folder link in the input
   - [ ] "Load PDFs" button works
   - [ ] PDFs are loaded from Google Drive
   - [ ] Search functionality works
@@ -58,10 +59,11 @@ If something doesn't work:
 1. **Open browser developer console** (F12)
 2. **Look for error messages**
 3. **Common issues:**
-   - API key not configured: Edit config.js
-   - Folder not accessible: Check sharing settings
+   - API key not configured: Edit config.js with your API key
+   - No folder link pasted: Paste a Google Drive folder link in the input field
+   - Folder not accessible: Check sharing settings ("Anyone with the link can view")
    - API not enabled: Enable Google Drive API in Google Cloud Console
-   - CORS errors: Ensure folder is publicly shared
+   - Invalid folder link: Make sure you copied the complete folder URL
 
 ## Security Reminders
 
@@ -74,16 +76,19 @@ If something doesn't work:
 
 - [ ] Bookmark your GitHub Pages URL
 - [ ] Share URL with users
+- [ ] Users can easily switch between folders by pasting different folder links
 - [ ] Update PDFs in Google Drive folder as needed (no redeployment needed!)
 - [ ] Monitor API usage in Google Cloud Console
 
 ## Success Criteria
 
 ✅ Website loads without errors
+✅ Users can paste a Google Drive folder link
 ✅ Users can click "Load PDFs" and see their PDFs
 ✅ Search functionality returns correct results
 ✅ PDFs open and display correctly
 ✅ Download functionality works
+✅ Folder link is remembered for future visits
 
 ---
 

@@ -24,22 +24,20 @@ Follow these steps to get your Time Planning Lookup website running:
 2. Upload all your PDF time planning files to this folder
 3. Right-click the folder → "Get link"
 4. Set to "Anyone with the link can view"
-5. Copy the folder ID from the URL
-   - URL format: `https://drive.google.com/drive/folders/FOLDER_ID_HERE`
-   - Copy only the `FOLDER_ID_HERE` part
+5. Copy the complete folder link
+   - Example: `https://drive.google.com/drive/folders/1AbCdEfGhIjKlMnOpQrStUvWxYz`
 
 ## Step 3: Configure the Website (1 minute)
 
 1. Open `config.js` in a text editor
 2. Replace `YOUR_GOOGLE_DRIVE_API_KEY` with your API key from Step 1
-3. Replace `YOUR_FOLDER_ID` with your folder ID from Step 2
-4. Save the file
+3. Save the file
 
 Example:
 ```javascript
 const CONFIG = {
     API_KEY: 'AIzaSyD1234567890abcdefghijklmnopqrstuv',
-    FOLDER_ID: '1AbCdEfGhIjKlMnOpQrStUvWxYz123456',
+    FOLDER_LINK: '', // Optional: set a default folder link
 };
 ```
 
@@ -55,29 +53,41 @@ const CONFIG = {
 ## Step 5: Use the Website
 
 1. Open your GitHub Pages URL
-2. Click "Load PDFs" button
-3. Wait for PDFs to load (first time may take a minute)
-4. Enter a name in the search box
-5. Click "Search" or press Enter
-6. Click on any result to view the PDF
+2. **Paste your Google Drive folder link** in the input field at the top
+3. Click "Load PDFs" button
+4. Wait for PDFs to load (first time may take a minute)
+5. Enter a name in the search box
+6. Click "Search" or press Enter
+7. Click on any result to view the PDF
+
+**Tip:** The application remembers your folder link, so you only need to paste it once!
 
 ## Troubleshooting
 
 **"Please configure your Google Drive API key"**
-- You haven't edited config.js yet, or the values are still the defaults
+- You haven't edited config.js yet, or the API key is still the default
+
+**"Please paste a Google Drive folder link"**
+- You need to paste your folder link in the input field at the top of the page
+
+**"Invalid Google Drive folder link"**
+- Make sure you copied the complete folder link from Google Drive
+- The link should look like: `https://drive.google.com/drive/folders/...`
 
 **"Failed to load PDFs"**
-- Check that your folder is shared publicly
+- Check that your folder is shared publicly ("Anyone with the link can view")
 - Verify your API key is correct
 - Make sure Google Drive API is enabled
 
 **"No PDF files found"**
-- Verify the folder ID is correct
 - Check that PDFs are in the folder (not in subfolders)
 - Ensure PDFs aren't in trash
 
 ## Tips
 
+- Set up the API key once, then use any folder by pasting its link
+- The folder link is saved in your browser for convenience
+- You can switch between different folders anytime
 - PDF processing happens in the browser, so first load may take time
 - Search works on PDF content, not just filenames
 - You can download PDFs directly from the viewer
