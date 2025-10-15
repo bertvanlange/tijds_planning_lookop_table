@@ -1,0 +1,22 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.log
+.cache/
+
+# Don't commit personal config with real API keys
+# (Users should configure config.js themselves)
+# config.js
+
+# Node modules if you add any build tools later
+node_modules/

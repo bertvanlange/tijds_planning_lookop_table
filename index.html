@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Planning Lookup</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Time Planning Lookup</h1>
+            <p>Search for your name to find your time planning</p>
+        </header>
+
+        <div class="search-section">
+            <input type="text" id="searchInput" placeholder="Enter your name..." />
+            <button id="searchBtn">Search</button>
+            <button id="loadBtn">Load PDFs</button>
+        </div>
+
+        <div id="status" class="status"></div>
+
+        <div id="results" class="results"></div>
+
+        <div id="pdfViewer" class="pdf-viewer hidden">
+            <div class="pdf-controls">
+                <button id="closeViewer">Close</button>
+                <a id="downloadBtn" download>Download PDF</a>
+            </div>
+            <iframe id="pdfFrame" width="100%" height="600px"></iframe>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
